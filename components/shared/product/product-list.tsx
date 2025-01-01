@@ -1,9 +1,10 @@
 import React from 'react';
 import ProductCard from "@/components/shared/product/product-card";
+import {Product} from "@/types";
 
 interface ProductListProps {
-    data: Record<string, any>[];
-    title: string
+    data: Product[];
+    title?: string
     limit?: number
 }
 

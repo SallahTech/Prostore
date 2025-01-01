@@ -3,12 +3,9 @@ import {Card, CardContent, CardHeader} from "@/components/ui/card";
 import Link from "next/link";
 import Image from "next/image";
 import ProductPrice from "@/components/shared/product/product-price";
+import {Product} from "@/types";
 
-interface ProductCardProps {
-    product: any
-}
-
-const ProductCard = ({product}: ProductCardProps) => {
+const ProductCard = ({product}: { product: Product }) => {
     return (
         <Card className={'w-full max-w-sm'}>
             <CardHeader className={'p-0 items-center'}>
