@@ -2,16 +2,16 @@
 
 import {Label} from "@/components/ui/label";
 import {Input} from "@/components/ui/input";
-import {signInDefaultValues} from "@/lib/constants";
+import {signUpDefaultValues} from "@/lib/constants";
 import {Button} from "@/components/ui/button";
 import Link from "next/link";
-import {signInWithCredentials} from "@/lib/actions/user.actions";
 import {useActionState} from "react";
 import {useFormStatus} from "react-dom";
 import {useSearchParams} from "next/navigation";
+import {signUpUser} from "@/lib/actions/user.actions";
 
-const CredentialsSignInForm = () => {
-    const [data, action] = useActionState(signInWithCredentials, {
+const SignUpForm = () => {
+    const [data, action] = useActionState(signUpUser, {
         success: false,
         message: ''
     })
@@ -20,11 +20,11 @@ const CredentialsSignInForm = () => {
 
     const callbackUrl = searchParams.get("callbackUrl") || '/';
 
-    const SignInButton = () => {
+    const SignUpButton = () => {
         const {pending} = useFormStatus()
 
         return <Button disabled={pending} className={'w-full'} variant={'default'}>
-            {pending ? 'Signing in...' : 'Sign In'}
+            {pending ? 'Submitting...' : 'Sign Up'}
         </Button>
     }
 
@@ -32,6 +32,18 @@ const CredentialsSignInForm = () => {
         <form action={action}>
             <input type="hidden" name="callbackUrl" value={callbackUrl}/>
             <div className={'space-y-6'}>
+                <div>
+                    <Label htmlFor={'name'}>Name</Label>
+                    <Input
+                        id={'name'}
+                        name={'name'}
+                        type='text'
+                        placeholder={'John'}
+                        required
+                        autoComplete={'name'}
+                        defaultValue={signUpDefaultValues.name}
+                    />
+                </div>
                 <div>
                     <Label htmlFor={'email'}>Email</Label>
                     <Input
@@ -41,7 +53,7 @@ const CredentialsSignInForm = () => {
                         placeholder={'john@example.com'}
                         required
                         autoComplete={'email'}
-                        defaultValue={signInDefaultValues.email}
+                        defaultValue={signUpDefaultValues.email}
                     />
                 </div>
                 <div>
@@ -53,11 +65,23 @@ const CredentialsSignInForm = () => {
                         placeholder={'.......'}
                         required
                         autoComplete={'password'}
-                        defaultValue={signInDefaultValues.password}
+                        defaultValue={signUpDefaultValues.password}
                     />
                 </div>
                 <div>
-                    <SignInButton/>
+                    <Label htmlFor={'confirmPassword'}>Confirm Password</Label>
+                    <Input
+                        id={'confirmPassword'}
+                        name={'confirmPassword'}
+                        type='password'
+                        placeholder={'.......'}
+                        required
+                        autoComplete={'confirmPassword'}
+                        defaultValue={signUpDefaultValues.confirmPassword}
+                    />
+                </div>
+                <div>
+                    <SignUpButton/>
                 </div>
 
                 {data && !data.success && (
@@ -66,9 +90,9 @@ const CredentialsSignInForm = () => {
                     </div>
                 )}
                 <div className="text-sm text-center text-muted-foreground">
-                    Don&apos;t have an account? {' '}
-                    <Link href={'/sign-up'} target={'_self'} className={'link'}>
-                        Sign Up
+                    Already have an account? {' '}
+                    <Link href={'/sign-IN'} target={'_self'} className={'link'}>
+                        Sign In
                     </Link>
                 </div>
             </div>
@@ -76,4 +100,4 @@ const CredentialsSignInForm = () => {
     );
 };
 
-export default CredentialsSignInForm;
+export default SignUpForm;
