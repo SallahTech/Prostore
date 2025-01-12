@@ -4,6 +4,7 @@ import "@/assets/styles/globals.css";
 import {APP_DESCRIPTION, APP_NAME, SERVER_URL} from "@/lib/constants";
 import React from "react";
 import {ThemeProvider} from "next-themes";
+import {Toaster} from "@/components/ui/toaster";
 
 const inter = Inter({subsets: ['latin']})
 
@@ -34,6 +35,7 @@ const RootLayout = ({
         >
 
             {children}
+            <Toaster/>
         </ThemeProvider>
         </body>
         </html>
