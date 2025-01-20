@@ -5,8 +5,8 @@ import {signIn, signOut} from '@/auth'
 
 import {isRedirectError} from "next/dist/client/components/redirect-error";
 import {prisma} from "@/db/prisma";
-import {hashSync} from "bcrypt-ts-edge";
 import {formatErrors} from "@/lib/utils";
+import {hash} from "@/lib/encryp";
 
 // Sign in the user with credentials
 export async function signInWithCredentials(prevState: unknown, formData: FormData) {
@@ -52,7 +52,7 @@ export async function signUpUser(prevState: unknown, formData: FormData) {
 
         const plainPassword = user.password
 
-        user.password = hashSync(user.password, 10)
+        user.password = await hash(user.password)
 
         await prisma.user.create({
             data: {

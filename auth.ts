@@ -3,8 +3,8 @@ import NextAuth from "next-auth";
 import {PrismaAdapter} from "@auth/prisma-adapter";
 import {prisma} from "@/db/prisma";
 import CredentialsProvider from 'next-auth/providers/credentials'
-import {compareSync} from "bcrypt-ts-edge";
 import {NextResponse} from "next/server";
+import {compare} from "@/lib/encryp";
 
 export const config = {
     pages: {
@@ -35,7 +35,7 @@ export const config = {
 
                 // check if user exists and if the password matches
                 if (user && user.password) {
-                    const isMatch = compareSync(credentials.password as string, user.password)
+                    const isMatch = await compare(credentials.password as string, user.password)
 
                     // if password is correct return user
                     if (isMatch) {
@@ -86,9 +86,9 @@ export const config = {
 
             return token
         },
-        authorized({request, auth}:any) {
+        authorized({request, auth}: any) {
             //check for session cart cookie
-            if(!request.cookies.get('sessionCartId')) {
+            if (!request.cookies.get('sessionCartId')) {
                 // Generate new session cartId cookie
                 const sessionCartId = crypto.randomUUID()
 
@@ -106,7 +106,7 @@ export const config = {
                 response.cookies.set('sessionCartId', sessionCartId)
 
                 return response
-            }else {
+            } else {
                 return true
             }
         }
